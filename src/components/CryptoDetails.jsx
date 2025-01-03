@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import HTMLReactParser from "html-react-parser";
 import { useParams } from 'react-router-dom';
 import millify from "millify";
-import { Col, Row, Typography,Select } from 'antd';
+import { Col, Row, Typography, Select } from 'antd';
 import {
     MoneyCollectOutlined,
     DollarCircleOutlined,
@@ -22,15 +22,15 @@ const CryptoDetails = () => {
     const { coinId } = useParams();
     const [timePeriod, setTimePeriod] = useState('7d');
     const {data, isFetching } = useGetCryptoDetailsQuery(coinId);
-    console.log("coin: ", data);
     const cryptoDetails = data?.data?.coin;
-
+    console.log("data: ", data);
+    console.log("cryptoDetails: ", cryptoDetails);
     const time = ['3h', '24h', '7d', '30d', '1y', '3m', '3y', '5y'];
 
     const stats = [
         { title: 'Price to USD', value: `$ ${cryptoDetails?.price && millify(cryptoDetails?.price)}`, icon: <DollarCircleOutlined /> },
         { title: 'Rank', value: cryptoDetails?.rank, icon: <NumberOutlined /> },
-        { title: '24h Volume', value: `$ ${cryptoDetails?.volume && millify(cryptoDetails?.volume)}`, icon: <ThunderboltOutlined /> },
+        { title: '24h Volume', value: `$ ${cryptoDetails?.['24hVolume'] && millify(cryptoDetails?.['24hVolume'])}`, icon: <ThunderboltOutlined /> },
         { title: 'Market Cap', value: `$ ${cryptoDetails?.marketCap && millify(cryptoDetails?.marketCap)}`, icon: <DollarCircleOutlined /> },
         { title: 'All-time-high(daily avg.)', value: `$ ${cryptoDetails?.allTimeHigh?.price && millify(cryptoDetails?.allTimeHigh?.price)}`, icon: <TrophyOutlined /> },
     ];
@@ -47,7 +47,7 @@ const CryptoDetails = () => {
         <Col className="coin-detail-container">
             <Col className="coin-heading-container">
                 <Title level={2} className="coin-name">
-                    {data?.data?.coin.name} ({data?.data?.coin.symbol}) Price
+                    {data?.data?.coin?.name} ({data?.data?.coin.symbol}) Price
                 </Title>
                 <p>
                     {data?.data?.coin.name} live price in US dollars.
@@ -70,8 +70,8 @@ const CryptoDetails = () => {
                                 {data?.data?.coin.name} Value statistics
                             </Title>
                         </Col>
-                        {stats.map(({ icon, title, value }) => (
-                            <Col className="coin-stats">
+                        {stats.map(({ icon, title, value }, index) => (
+                            <Col className="coin-stats" key={index}>
                                 <Col className="coin-stats-name">
                                     <Text>{icon}</Text>
                                     <Text>{title}</Text>
@@ -87,7 +87,7 @@ const CryptoDetails = () => {
                             </Title>
                         </Col>
                         {genericStats.map(({ icon, title, value }) => (
-                            <Col className="coin-stats">
+                            <Col className="coin-stats" key={{}.id}>
                                 <Col className="coin-stats-name">
                                     <Text>{icon}</Text>
                                     <Text>{title}</Text>

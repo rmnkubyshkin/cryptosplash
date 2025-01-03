@@ -1,14 +1,12 @@
 import React from "react";
-import { Select, Typography, Row, Col, Avatar, Card } from 'antd';
-import moment from 'moment';
+import { Select, Typography, Row, Col, Card } from 'antd';
 import { useGetCryptoNewsQuery } from "../services/cryptoNewsApi";
 
-const { Text, Title } = Typography;
+const { Title } = Typography;
 const { Option } = Select;
 
 const News = ( {simplified} ) => {
     const {data: cryptoNews } = useGetCryptoNewsQuery({newsCategory: 'Cryptocurrency', count: simplified ? 6: 12});
-    console.log("cryptoNews: ", cryptoNews);
     if (!cryptoNews?.data?.items) return 'Loading...';
 
     return (
